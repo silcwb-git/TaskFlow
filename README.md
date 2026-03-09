@@ -66,22 +66,22 @@ dotnet run --project TaskFlow.API/TaskFlow.API.csproj
 cd src/TaskFlow.Frontend
 ```
 
-# Install dependencies
+## Install dependencies
 npm install
 
-# Run development server
+## Run development server
 ng serve
 
 Frontend will be available at: http://localhost:4200
 
-### 🧪 Testing
-# Backend Tests
+## 🧪 Testing
+## Backend Tests
 ```bash
 cd src/TaskFlow.Backend
 dotnet test
 ```
 
-# Frontend Tests
+## Frontend Tests
 ```bash
 cd src/TaskFlow.Frontend
 ng test --watch=falsecd src/TaskFlow.Frontend
@@ -92,11 +92,11 @@ ng test --watch=false
 
 Access Swagger UI at: https://localhost:5001/swaggerAuthentication 
 
-# Endpoints
+## Endpoints
 POST /api/auth/register - Register new user
 POST /api/auth/login - Login user
 
-# Task Endpoints
+## Task Endpoints
 GET /api/tasks - Get all tasks
 GET /api/tasks/{id} - Get task by ID
 POST /api/tasks - Create new task
@@ -105,7 +105,7 @@ DELETE /api/tasks/{id} - Delete task
 
 ## 📝 Example Usage
 
-# Register
+## Register
 ```bash
 POST /api/auth/register
 {
@@ -114,7 +114,7 @@ POST /api/auth/register
 }
 ```
 
-# Create Task
+## Create Task
 ```bash
 POST /api/tasks
 Authorization: Bearer {token}
@@ -258,7 +258,8 @@ This project is licensed under the MIT License.
 ## 👩‍💻 Author
 Created with ❤️ by Silvanna Siqueira
 
-## 📞 SupportFor support, email silvana.siqueira@gmail.com or open an issue on GitHub.EOF
+## 📞 Support
+For support, email silvana.siqueira@gmail.com or open an issue on GitHub.EOF
 git add README.md git commit -m "docs: add comprehensive README with setup instructions"
 ---
 

@@ -1,21 +1,25 @@
-# .NET
-bin/
-obj/
-*.dll
-*.exe
-*.pdb
-.vs/
-.vscode/
+# Backend
+src/TaskFlow.Backend/**/bin/
+src/TaskFlow.Backend/**/obj/
+src/TaskFlow.Backend/**/.vs/
+src/TaskFlow.Backend/**/.vscode/
+src/TaskFlow.Backend/**/*.user
+src/TaskFlow.Backend/**/*.suo
+src/TaskFlow.Backend/**/appsettings.local.json
 
-# Angular
-node_modules/
-dist/
-.angular/
+# Frontend
+src/TaskFlow.Frontend/node_modules/
+src/TaskFlow.Frontend/dist/
+src/TaskFlow.Frontend/.angular/
+src/TaskFlow.Frontend/.vscode/
+src/TaskFlow.Frontend/coverage/
 
 # IDE
+.vscode/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS
 .DS_Store
@@ -23,4 +27,4 @@ Thumbs.db
 
 # Environment
 .env
-appsettings.*.json
+.env.local

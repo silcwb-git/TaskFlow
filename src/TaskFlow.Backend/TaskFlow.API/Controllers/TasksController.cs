@@ -4,6 +4,7 @@ using TaskFlow.Application.DTOs;
 using TaskFlow.Domain.Entities;
 using TaskFlow.Infrastructure.Repositories;
 using System.Security.Claims;
+using DomainTask = TaskFlow.Domain.Entities.Task;
 
 namespace TaskFlow.API.Controllers
 {
@@ -12,14 +13,14 @@ namespace TaskFlow.API.Controllers
     [Authorize]
     public class TasksController : ControllerBase
     {
-        private readonly IGenericRepository<Task> _tasksRepository;
+        private readonly IGenericRepository<DomainTask> _taskRepository;
         private readonly ILogger<TasksController> _logger;
 
         public TasksController(
-            IGenericRepository<Task> tasksRepository,
+            IGenericRepository<DomainTask> taskRepository,
             ILogger<TasksController> logger)
         {
-            _tasksRepository = tasksRepository;
+            _taskRepository = taskRepository;
             _logger = logger;
         }
 
@@ -36,7 +37,7 @@ namespace TaskFlow.API.Controllers
 
             _logger.LogInformation("Creating task for user: {UserId}", userGuid);
 
-            var task = new Task
+            var newTask = new DomainTask
             {
                 Id = Guid.NewGuid(),
                 UserId = userGuid,
@@ -48,10 +49,10 @@ namespace TaskFlow.API.Controllers
                 DueDate = dto.DueDate
             };
 
-            await _taskRepository.AddAsync(task);
+            await _taskRepository.AddAsync(newTask);
             await _taskRepository.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetTaskById), new { id = task.Id }, MapToDto(task));
+            return CreatedAtAction(nameof(GetTaskById), new { id = newTask.Id }, MapToDto(newTask));
         }
 
         [HttpGet("{id}")]
@@ -59,13 +60,13 @@ namespace TaskFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TaskDto>> GetTaskById(Guid id)
         {
-            var task = await _taskRepository.GetByIdAsync(id);
-            if (task == null)
+            var taskItem = await _taskRepository.GetByIdAsync(id);
+            if (taskItem == null)
             {
                 return NotFound();
             }
 
-            return Ok(MapToDto(task));
+            return Ok(MapToDto(taskItem));
         }
 
         [HttpGet]
@@ -81,17 +82,17 @@ namespace TaskFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateTask(Guid id, [FromBody] CreateTaskDto dto)
         {
-            var task = await _taskRepository.GetByIdAsync(id);
-            if (task == null)
+            var taskItem = await _taskRepository.GetByIdAsync(id);
+            if (taskItem == null)
             {
                 return NotFound();
             }
 
-            task.Title = dto.Title;
-            task.Description = dto.Description;
-            task.DueDate = dto.DueDate;
+            taskItem.Title = dto.Title;
+            taskItem.Description = dto.Description;
+            taskItem.DueDate = dto.DueDate;
 
-            await _taskRepository.UpdateAsync(task);
+            await _taskRepository.UpdateAsync(taskItem);
             await _taskRepository.SaveChangesAsync();
 
             return NoContent();
@@ -102,33 +103,31 @@ namespace TaskFlow.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteTask(Guid id)
         {
-            var task = await _taskRepository.GetByIdAsync(id);
-            if (task == null)
+            var taskItem = await _taskRepository.GetByIdAsync(id);
+            if (taskItem == null)
             {
                 return NotFound();
             }
 
-            await _taskRepository.DeleteAsync(task);
+            await _taskRepository.DeleteAsync(taskItem);
             await _taskRepository.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private TaskDto MapToDto(Task task)
+        private TaskDto MapToDto(DomainTask taskItem)
         {
             return new TaskDto
             {
-                Id = task.Id,
-                Title = task.Title,
-                Description = task.Description,
-                Status = task.Status.ToString(),
-                Priority = task.Priority.ToString(),
-                CreatedAt = task.CreatedAt,
-                DueDate = task.DueDate,
-                CompletedAt = task.CompletedAt
+                Id = taskItem.Id,
+                Title = taskItem.Title,
+                Description = taskItem.Description,
+                Status = taskItem.Status.ToString(),
+                Priority = taskItem.Priority.ToString(),
+                CreatedAt = taskItem.CreatedAt,
+                DueDate = taskItem.DueDate,
+                CompletedAt = taskItem.CompletedAt
             };
         }
     }
-            
 }
-

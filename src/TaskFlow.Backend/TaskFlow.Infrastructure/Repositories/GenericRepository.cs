@@ -1,18 +1,17 @@
-using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.Infrastructure.Data;
 
 namespace TaskFlow.Infrastructure.Repositories
 {
-    public class GenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly TaskFlowDbContext _context;
-        private DbSet<T> _dbSet;
+        private readonly DbSet<T> _dbSet;
 
         public GenericRepository(TaskFlowDbContext context)
         {
             _context = context;
-            _dbSet = _context.Set<T>();
+            _dbSet = context.Set<T>();
         }
 
         public async Task<T?> GetByIdAsync(Guid id)
@@ -41,11 +40,10 @@ namespace TaskFlow.Infrastructure.Repositories
             _dbSet.Remove(entity);
             await Task.CompletedTask;
         }
-        
-        public async Task SaveChanges (T entity)
+
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
-    
     }
 }

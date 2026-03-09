@@ -18,8 +18,8 @@ namespace TaskFlow.Infrastructure.Security
 
         public string GenerateAccessToken(Guid userId, string email)
         {
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+            var secretKey = _configuration["Jwt:SecretKey"] ?? throw new InvalidOperationException("Jwt:SecretKey not configured");
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -28,11 +28,12 @@ namespace TaskFlow.Infrastructure.Security
                 new Claim(ClaimTypes.Email, email)
             };
 
+            var expirationMinutes = _configuration["Jwt:ExpirationMinutes"] ?? "60";
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:ExpirationMinutes"])),
+                expires: DateTime.UtcNow.AddMinutes(int.Parse(expirationMinutes)),
                 signingCredentials: credentials
             );
 
@@ -53,8 +54,8 @@ namespace TaskFlow.Infrastructure.Security
         {
             try
             {
-                var key = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
+                var secretKey = _configuration["Jwt:SecretKey"] ?? throw new InvalidOperationException("Jwt:SecretKey not configured");
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters

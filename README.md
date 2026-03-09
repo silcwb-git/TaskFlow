@@ -128,90 +128,71 @@ Authorization: Bearer {token}
 
 ## 📂 Project Structure
 
-TaskFlow/
-├── src/
-│   ├── TaskFlow.Backend/
-│   │   ├── TaskFlow.Domain/
-│   │   │   ├── Entities/
-│   │   │   │   ├── User.cs
-│   │   │   │   └── Task.cs
-│   │   │   └── Enums/
-│   │   │       ├── TaskStatus.cs
-│   │   │       └── TaskPriority.cs
-│   │   ├── TaskFlow.Application/
-│   │   │   ├── DTOs/
-│   │   │   │   ├── LoginDto.cs
-│   │   │   │   ├── RegisterDto.cs
-│   │   │   │   └── TaskDto.cs
-│   │   │   └── Services/
-│   │   ├── TaskFlow.Infrastructure/
-│   │   │   ├── Data/
-│   │   │   │   └── TaskFlowDbContext.cs
-│   │   │   ├── Repositories/
-│   │   │   │   └── GenericRepository.cs
-│   │   │   └── Security/
-│   │   │       └── JwtTokenService.cs
-│   │   ├── TaskFlow.API/
-│   │   │   ├── Controllers/
-│   │   │   │   ├── AuthController.cs
-│   │   │   │   └── TasksController.cs
-│   │   │   ├── Program.cs
-│   │   │   └── appsettings.json
-│   │   ├── TaskFlow.Tests/
-│   │   │   ├── Features/
-│   │   │   │   ├── Auth/
-│   │   │   │   │   ├── AuthServiceTests.cs (✅ 7 tests)
-│   │   │   │   │   └── UserEntityTests.cs (✅ 5 tests)
-│   │   │   │   └── Tasks/
-│   │   │   │       └── TaskEntityTests.cs (✅ 5 tests)
-│   │   │   ├── Infrastructure/
-│   │   │   │   └── GenericRepositoryTests.cs (✅ 2 tests)
-│   │   │   └── TaskFlow.Tests.csproj
-│   │   ├── docker-compose.yml
-│   │   └── TaskFlow.sln
-│   │
-│   └── TaskFlow.Frontend/
-│       ├── src/
-│       │   ├── app/
-│       │   │   ├── core/
-│       │   │   │   ├── guards/
-│       │   │   │   │   └── auth.guard.ts
-│       │   │   │   ├── interceptors/
-│       │   │   │   │   └── jwt.interceptor.ts
-│       │   │   │   └── services/
-│       │   │   ├── features/
-│       │   │   │   ├── auth/
-│       │   │   │   │   ├── components/
-│       │   │   │   │   │   ├── login.component.ts
-│       │   │   │   │   │   └── register.component.ts
-│       │   │   │   │   └── services/
-│       │   │   │   │       ├── auth.service.ts
-│       │   │   │   │       └── auth.service.spec.ts (✅ 6 tests)
-│       │   │   │   └── tasks/
-│       │   │   │       ├── components/
-│       │   │   │       │   └── task-list.component.ts
-│       │   │   │       └── services/
-│       │   │   │           ├── task.service.ts
-│       │   │   │           └── task.service.spec.ts (✅ 6 tests)
-│       │   │   ├── shared/
-│       │   │   │   └── components/
-│       │   │   ├── app.component.ts
-│       │   │   ├── app.component.spec.ts (✅ 3 tests)
-│       │   │   ├── app.config.ts
-│       │   │   └── app.routes.ts
-│       │   ├── main.ts
-│       │   ├── index.html
-│       │   └── styles.css
-│       ├── angular.json
-│       ├── package.json
-│       ├── tsconfig.json
-│       └── karma.conf.js
-│
-├── .gitignore
-├── README.md
-└── .git/
+### Backend (.NET 8)
 
-# Backend (.NET 8)
+| Layer | Component | Files |
+|-------|-----------|-------|
+| **Domain** | Entities | `User.cs`, `Task.cs` |
+| **Domain** | Enums | `TaskStatus.cs`, `TaskPriority.cs` |
+| **Application** | DTOs | `LoginDto.cs`, `RegisterDto.cs`, `TaskDto.cs` |
+| **Application** | Services | Service implementations |
+| **Infrastructure** | Data | `TaskFlowDbContext.cs` |
+| **Infrastructure** | Repositories | `GenericRepository.cs` |
+| **Infrastructure** | Security | `JwtTokenService.cs` |
+| **API** | Controllers | `AuthController.cs`, `TasksController.cs` |
+| **API** | Configuration | `Program.cs`, `appsettings.json` |
+| **Tests** | Auth Tests | `AuthServiceTests.cs` (7 tests ✅) |
+| **Tests** | Auth Tests | `UserEntityTests.cs` (5 tests ✅) |
+| **Tests** | Task Tests | `TaskEntityTests.cs` (5 tests ✅) |
+| **Tests** | Repository Tests | `GenericRepositoryTests.cs` (2 tests ✅) |
+| **DevOps** | Docker | `docker-compose.yml` |
+| **DevOps** | Solution | `TaskFlow.sln` |
+
+### Frontend (Angular 18+)
+
+| Layer | Component | Files |
+|-------|-----------|-------|
+| **Core** | Guards | `auth.guard.ts` |
+| **Core** | Interceptors | `jwt.interceptor.ts` |
+| **Core** | Services | Service implementations |
+| **Features** | Auth Components | `login.component.ts`, `register.component.ts` |
+| **Features** | Auth Services | `auth.service.ts` |
+| **Features** | Auth Tests | `auth.service.spec.ts` (6 tests ✅) |
+| **Features** | Task Components | `task-list.component.ts` |
+| **Features** | Task Services | `task.service.ts` |
+| **Features** | Task Tests | `task.service.spec.ts` (6 tests ✅) |
+| **Shared** | Components | Common shared components |
+| **Root** | App Component | `app.component.ts` |
+| **Root** | App Tests | `app.component.spec.ts` (3 tests ✅) |
+| **Root** | Configuration | `app.config.ts`, `app.routes.ts` |
+| **Root** | Entry Point | `main.ts`, `index.html`, `styles.css` |
+| **Config** | Angular Config | `angular.json`, `tsconfig.json` |
+| **Config** | Package Config | `package.json` |
+| **Config** | Test Config | `karma.conf.js` |
+
+### Project Root
+
+| Item | Description |
+|------|-------------|
+| `.gitignore` | Git ignore rules |
+| `README.md` | Project documentation |
+| `.git/` | Git repository |
+
+---
+
+## 📊 Test Summary
+
+| Camada | Framework | Testes | Status |
+|--------|-----------|--------|--------|
+| Backend | xUnit | 19 | ✅ Passing |
+| Frontend | Jasmine | 15 | ✅ Passing |
+| **Total** | - | **34** | **✅ Passing** |
+
+---
+
+## 🏗️ Directory Tree
+
+## Backend (.NET 8)
 ✅ Domain Layer (Entities, Enums)
 ✅ Application Layer (DTOs, Services)
 ✅ Infrastructure Layer (Data, Repositories, Security)
@@ -219,20 +200,20 @@ TaskFlow/
 ✅ Tests (xUnit - 19 testes passando)
 ✅ Docker (SQL Server)
 
-# Frontend (Angular 18+)
+## Frontend (Angular 18+)
 ✅ Core (Guards, Interceptors, Services)
 ✅ Features (Auth, Tasks)
 ✅ Shared (Common Components)
 ✅ Tests (Jasmine - 15 testes passando)
 ✅ Standalone Components
 
-# DevOps
+## DevOps
 ✅ Git Repository
 ✅ .gitignore
 ✅ README.md
 ✅ Professional Commits
 
-# 🎯 Tests Summary
+## 🎯 Tests Summary
 
 | Layer | Framework | Tests | Status |
 |--------|-----------|--------|--------|
@@ -240,15 +221,15 @@ TaskFlow/
 | Frontend | Jasmine | 15 | ✅ Passing |
 | **Total** | - | **34** | **✅ Passing** |
 
-# 🧪 Tests Details
+## 🧪 Tests Details
 
-# Backend (xUnit) - 19 testes
+## Backend (xUnit) - 19 testes
 AuthServiceTests.cs → 7 tests ✅
 UserEntityTests.cs → 5 tests ✅
 TaskEntityTests.cs → 5 tests ✅
 GenericRepositoryTests.cs → 2 tests ✅
 
-# Frontend (Jasmine) - 15 tests
+## Frontend (Jasmine) - 15 tests
 auth.service.spec.ts → 6 tests ✅
 task.service.spec.ts → 6 tests ✅
 app.component.spec.ts → 3 tests ✅

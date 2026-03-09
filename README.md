@@ -40,7 +40,7 @@ Full-stack task management application built with **Angular 18+** and **.NET 8**
 
 ## 🚀 Getting Started
 
-### Backend Setup
+## Backend Setup
 ```bash
 cd src/TaskFlow.Backend
 
@@ -60,7 +60,7 @@ dotnet ef database update --project TaskFlow.Infrastructure --startup-project Ta
 
 # Run
 dotnet run --project TaskFlow.API/TaskFlow.API.csproj
-
+```
 ### Frontend Setup
 ```bash
 cd src/TaskFlow.Frontend

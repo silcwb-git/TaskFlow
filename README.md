@@ -92,16 +92,36 @@ ng test --watch=false
 
 Access Swagger UI at: https://localhost:5001/swaggerAuthentication 
 
-## Endpoints
-POST /api/auth/register - Register new user
-POST /api/auth/login - Login user
+## 📚 API Endpoints
 
-## Task Endpoints
-GET /api/tasks - Get all tasks
-GET /api/tasks/{id} - Get task by ID
-POST /api/tasks - Create new task
-PUT /api/tasks/{id} - Update task
-DELETE /api/tasks/{id} - Delete task
+### Authentication Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login user |
+
+### Task Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Get all tasks |
+| GET | `/api/tasks/{id}` | Get task by ID |
+| POST | `/api/tasks` | Create new task |
+| PUT | `/api/tasks/{id}` | Update task |
+| DELETE | `/api/tasks/{id}` | Delete task |
+
+### Complete API Reference
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|----------------|
+| POST | `/api/auth/register` | Register new user | ❌ No |
+| POST | `/api/auth/login` | Login user | ❌ No |
+| GET | `/api/tasks` | Get all tasks | ✅ Yes |
+| GET | `/api/tasks/{id}` | Get task by ID | ✅ Yes |
+| POST | `/api/tasks` | Create new task | ✅ Yes |
+| PUT | `/api/tasks/{id}` | Update task | ✅ Yes |
+| DELETE | `/api/tasks/{id}` | Delete task | ✅ Yes |
 
 ## 📝 Example Usage
 

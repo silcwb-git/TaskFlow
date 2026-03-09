@@ -180,59 +180,70 @@ Authorization: Bearer {token}
 
 ---
 
-## 📊 Test Summary
+## 🧪 Test Details
 
-| Camada | Framework | Testes | Status |
-|--------|-----------|--------|--------|
+### Backend (xUnit) - 19 Tests ✅
+
+| Test File | Tests | Status |
+|-----------|-------|--------|
+| `AuthServiceTests.cs` | 7 | ✅ Passing |
+| `UserEntityTests.cs` | 5 | ✅ Passing |
+| `TaskEntityTests.cs` | 5 | ✅ Passing |
+| `GenericRepositoryTests.cs` | 2 | ✅ Passing |
+| **Total Backend** | **19** | **✅ Passing** |
+
+### Frontend (Jasmine) - 15 Tests ✅
+
+| Test File | Tests | Status |
+|-----------|-------|--------|
+| `auth.service.spec.ts` | 6 | ✅ Passing |
+| `task.service.spec.ts` | 6 | ✅ Passing |
+| `app.component.spec.ts` | 3 | ✅ Passing |
+| **Total Frontend** | **15** | **✅ Passing** |
+
+### Overall Test Summary
+
+| Layer | Framework | Total Tests | Status |
+|-------|-----------|-------------|--------|
 | Backend | xUnit | 19 | ✅ Passing |
 | Frontend | Jasmine | 15 | ✅ Passing |
-| **Total** | - | **34** | **✅ Passing** |
+| **Grand Total** | - | **34** | **✅ Passing** |
 
 ---
 
-## 🏗️ Directory Tree
+## 🏗️ Architecture Overview
 
-## Backend (.NET 8)
-✅ Domain Layer (Entities, Enums)
-✅ Application Layer (DTOs, Services)
-✅ Infrastructure Layer (Data, Repositories, Security)
-✅ API Layer (Controllers, Program.cs)
-✅ Tests (xUnit - 19 testes passando)
-✅ Docker (SQL Server)
+### Backend (.NET 8)
 
-## Frontend (Angular 18+)
-✅ Core (Guards, Interceptors, Services)
-✅ Features (Auth, Tasks)
-✅ Shared (Common Components)
-✅ Tests (Jasmine - 15 testes passando)
-✅ Standalone Components
+| Layer | Component | Status |
+|-------|-----------|--------|
+| Domain | Entities, Enums | ✅ Implemented |
+| Application | DTOs, Services | ✅ Implemented |
+| Infrastructure | Data, Repositories, Security | ✅ Implemented |
+| API | Controllers, Program.cs | ✅ Implemented |
+| Testing | xUnit (19 tests) | ✅ Passing |
+| DevOps | Docker (SQL Server) | ✅ Configured |
 
-## DevOps
-✅ Git Repository
-✅ .gitignore
-✅ README.md
-✅ Professional Commits
+### Frontend (Angular 18+)
 
-## 🎯 Tests Summary
+| Layer | Component | Status |
+|-------|-----------|--------|
+| Core | Guards, Interceptors, Services | ✅ Implemented |
+| Features | Auth, Tasks | ✅ Implemented |
+| Shared | Common Components | ✅ Implemented |
+| Testing | Jasmine (15 tests) | ✅ Passing |
+| Architecture | Standalone Components | ✅ Implemented |
 
-| Layer | Framework | Tests | Status |
-|--------|-----------|--------|--------|
-| Backend | xUnit | 19 | ✅ Passing |
-| Frontend | Jasmine | 15 | ✅ Passing |
-| **Total** | - | **34** | **✅ Passing** |
+### DevOps & Version Control
 
-## 🧪 Tests Details
+| Item | Description | Status |
+|------|-------------|--------|
+| Repository | Git Repository | ✅ Configured |
+| Ignore Rules | .gitignore | ✅ Configured |
+| Documentation | README.md | ✅ Complete |
+| Commits | Professional Commits | ✅ Implemented |
 
-## Backend (xUnit) - 19 testes
-AuthServiceTests.cs → 7 tests ✅
-UserEntityTests.cs → 5 tests ✅
-TaskEntityTests.cs → 5 tests ✅
-GenericRepositoryTests.cs → 2 tests ✅
-
-## Frontend (Jasmine) - 15 tests
-auth.service.spec.ts → 6 tests ✅
-task.service.spec.ts → 6 tests ✅
-app.component.spec.ts → 3 tests ✅
+---
 
 ## 🤝 Contributing
 1. Fork the repository
@@ -244,7 +255,7 @@ app.component.spec.ts → 3 tests ✅
 ## 📄 License
 This project is licensed under the MIT License.
 
-## 👨‍💻 Author
+## 👩‍💻 Author
 Created with ❤️ by Silvanna Siqueira
 
 ## 📞 SupportFor support, email silvana.siqueira@gmail.com or open an issue on GitHub.EOF

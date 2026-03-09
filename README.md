@@ -61,17 +61,16 @@ dotnet ef database update --project TaskFlow.Infrastructure --startup-project Ta
 # Run
 dotnet run --project TaskFlow.API/TaskFlow.API.csproj
 
-### Backend Setup
+### Frontend Setup
 ```bash
 cd src/TaskFlow.Frontend
-```
 
 ## Install dependencies
 npm install
 
 ## Run development server
 ng serve
-
+```
 Frontend will be available at: http://localhost:4200
 
 ## 🧪 Testing
@@ -276,11 +275,8 @@ Authorization: Bearer {token}
 This project is licensed under the MIT License.
 
 ## 👩‍💻 Author
-Created with ❤️ by Silvanna Siqueira
+Created with ❤️ by Silvanna Siqueira - silvana.siqueira@gmail.com
 
-## 📞 Support
-For support, email silvana.siqueira@gmail.com or open an issue on GitHub.EOF
-git add README.md git commit -m "docs: add comprehensive README with setup instructions"
 ---
 
 

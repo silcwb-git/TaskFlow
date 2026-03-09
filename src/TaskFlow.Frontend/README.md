@@ -92,6 +92,7 @@ Access Swagger UI at: https://localhost:5001/swaggerAuthentication
 # Endpoints
 POST /api/auth/register - Register new user
 POST /api/auth/login - Login user
+
 # Task Endpoints
 GET /api/tasks - Get all tasks
 GET /api/tasks/{id} - Get task by ID

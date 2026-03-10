@@ -304,6 +304,8 @@ import { AuthService } from '../../auth/services/auth.service';
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
+  selectedPriority: string = '';
+  priorities = ['Low', 'Medium', 'High', 'Critical'];
   newTask: CreateTaskRequest = {
     title: '',
     description: '',
@@ -324,6 +326,13 @@ export class TaskListComponent implements OnInit {
   }
 
   loadTasks(): void {
+    if (this.selectedPriority) {
+      this.taskService.getTasksByPriority(this.selectedPriority)
+        .subscribe(tasks => this.tasks = tasks);
+    } else {
+      this.taskService.getAllTasks()
+        .subscribe(tasks => this.tasks = tasks);
+    }
     this.taskService.getAllTasks().subscribe({
       next: (tasks) => {
         this.tasks = tasks;
@@ -377,5 +386,10 @@ export class TaskListComponent implements OnInit {
   onLogout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+  
+  onPriorityChange(priority: string): void {
+    this.selectedPriority = priority;
+    this.loadTasks();
   }
 }

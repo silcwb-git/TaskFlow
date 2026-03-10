@@ -47,4 +47,7 @@ export class TaskService {
   deleteTask(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  getTasksByPriority(priority: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/filter?priority=${priority}`);
+  }
 }

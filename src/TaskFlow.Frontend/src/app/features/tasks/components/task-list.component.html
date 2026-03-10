@@ -1,0 +1,22 @@
+<div class="filter-container">
+  <label for="priority">Filter by Priority:</label>
+  <select 
+    id="priority" 
+    (change)="onPriorityChange($event.target.value)"
+    [value]="selectedPriority">
+    <option value="">All Priorities</option>
+    <option *ngFor="let priority of priorities" [value]="priority">
+      {{ priority }}
+    </option>
+  </select>
+</div>
+
+<div class="tasks-list">
+  <div *ngFor="let task of tasks" class="task-card">
+    <h3>{{ task.title }}</h3>
+    <p>{{ task.description }}</p>
+    <span class="priority" [ngClass]="'priority-' + task.priority">
+      {{ task.priority }}
+    </span>
+  </div>
+</div>

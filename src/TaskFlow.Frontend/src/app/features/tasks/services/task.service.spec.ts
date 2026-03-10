@@ -126,4 +126,15 @@ describe('TaskService', () => {
     expect(req.request.method).toBe('DELETE');
     req.flush(null);
   });
+
+  it(`should filter tests by priority`, (done) => {
+      const mockTasks = [
+        {id: '1', Title: 'High Task', priority: "High"}
+      ];
+
+      service.getTasksByPriority("High").subscribe(tasks => {
+        expect(tasks.length).toBe(1);
+        expect(tasks[0].priority).toBe('High');
+      })
+  });
 });

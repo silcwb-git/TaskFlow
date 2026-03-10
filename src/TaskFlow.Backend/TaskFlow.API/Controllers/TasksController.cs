@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskFlow.Application.DTOs;
+using TaskFlow.Application.Services;
 using TaskFlow.Domain.Entities;
-using TaskFlow.Infrastructure.Repositories;
-using System.Security.Claims;
-using DomainTask = TaskFlow.Domain.Entities.Task;
 
 namespace TaskFlow.API.Controllers
 {
@@ -13,121 +11,69 @@ namespace TaskFlow.API.Controllers
     [Authorize]
     public class TasksController : ControllerBase
     {
-        private readonly IGenericRepository<DomainTask> _taskRepository;
-        private readonly ILogger<TasksController> _logger;
+        private readonly TaskService _taskService;
 
-        public TasksController(
-            IGenericRepository<DomainTask> taskRepository,
-            ILogger<TasksController> logger)
+        public TasksController(TaskService taskService)
         {
-            _taskRepository = taskRepository;
-            _logger = logger;
-        }
-
-        [HttpPost]
-        [ProducesResponseType(typeof(TaskDto), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<TaskDto>> CreateTask([FromBody] CreateTaskDto dto)
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (!Guid.TryParse(userId, out var userGuid))
-            {
-                return Unauthorized();
-            }
-
-            _logger.LogInformation("Creating task for user: {UserId}", userGuid);
-
-            var newTask = new DomainTask
-            {
-                Id = Guid.NewGuid(),
-                UserId = userGuid,
-                Title = dto.Title,
-                Description = dto.Description,
-                Status = Domain.Entities.TaskStatus.Todo,
-                Priority = Enum.Parse<Domain.Entities.TaskPriority>(dto.Priority),
-                CreatedAt = DateTime.UtcNow,
-                DueDate = dto.DueDate
-            };
-
-            await _taskRepository.AddAsync(newTask);
-            await _taskRepository.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetTaskById), new { id = newTask.Id }, MapToDto(newTask));
-        }
-
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(TaskDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<TaskDto>> GetTaskById(Guid id)
-        {
-            var taskItem = await _taskRepository.GetByIdAsync(id);
-            if (taskItem == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(MapToDto(taskItem));
+            _taskService = taskService;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<TaskDto>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<TaskDto>>> GetAllTasks()
+        public async Task<IActionResult> GetAllTasks()
         {
-            var tasks = await _taskRepository.GetAllAsync();
-            return Ok(tasks.Select(MapToDto));
+            var tasks = await _taskService.GetAllTasksAsync();
+            return Ok(tasks);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTaskById(Guid id)
+        {
+            var task = await _taskService.GetTaskByIdAsync(id);
+            return Ok(task);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTask([FromBody] TaskDto taskDto)
+        {
+            var createdTask = await _taskService.CreateTaskAsync(taskDto);
+            return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.Id }, createdTask);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateTask(Guid id, [FromBody] CreateTaskDto dto)
+        public async Task<IActionResult> UpdateTask(Guid id, [FromBody] TaskDto taskDto)
         {
-            var taskItem = await _taskRepository.GetByIdAsync(id);
-            if (taskItem == null)
-            {
-                return NotFound();
-            }
-
-            taskItem.Title = dto.Title;
-            taskItem.Description = dto.Description;
-            taskItem.DueDate = dto.DueDate;
-
-            await _taskRepository.UpdateAsync(taskItem);
-            await _taskRepository.SaveChangesAsync();
-
-            return NoContent();
+            var updatedTask = await _taskService.UpdateTaskAsync(id, taskDto);
+            return Ok(updatedTask);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteTask(Guid id)
         {
-            var taskItem = await _taskRepository.GetByIdAsync(id);
-            if (taskItem == null)
-            {
-                return NotFound();
-            }
-
-            await _taskRepository.DeleteAsync(taskItem);
-            await _taskRepository.SaveChangesAsync();
-
+            await _taskService.DeleteTaskAsync(id);
             return NoContent();
         }
 
-        private TaskDto MapToDto(DomainTask taskItem)
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetTasksByPriority([FromQuery] TaskPriority priority)
         {
-            return new TaskDto
-            {
-                Id = taskItem.Id,
-                Title = taskItem.Title,
-                Description = taskItem.Description,
-                Status = taskItem.Status.ToString(),
-                Priority = taskItem.Priority.ToString(),
-                CreatedAt = taskItem.CreatedAt,
-                DueDate = taskItem.DueDate,
-                CompletedAt = taskItem.CompletedAt
-            };
+            var tasks = await _taskService.GetTasksByPriorityAsync(priority);
+            return Ok(tasks);
+        }
+
+        [HttpGet("paginated")]
+        public async Task<IActionResult> GetTasksPaginated(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var result = await _taskService.GetTasksPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchTasks([FromQuery] string query)
+        {
+            var tasks = await _taskService.SearchTasksAsync(query);
+            return Ok(tasks);
         }
     }
 }

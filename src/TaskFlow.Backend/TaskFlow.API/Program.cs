@@ -1,7 +1,12 @@
-using TaskFlow.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TaskFlow.Infrastructure.Data;
+using TaskFlow.Application.Services;
+using TaskFlow.Infrastructure.Repositories;
+using TaskFlow.Domain.Entities;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +14,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddInfrastructure(builder.Configuration);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<TaskFlowDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
-var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:SecretKey"]);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped(typeof(GenericRepository<>));
+builder.Services.AddScoped<TaskService>();
+
+var jwtSecret = builder.Configuration["Jwt:SecretKey"];
+if (string.IsNullOrEmpty(jwtSecret))
+    jwtSecret = "your-secret-key-here-change-in-production";
+
+var key = Encoding.ASCII.GetBytes(jwtSecret);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -23,15 +39,22 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidateAudience = true,
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        ValidateLifetime = true
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -42,6 +65,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

@@ -47,7 +47,7 @@ namespace TaskFlow.API.Controllers
         public async Task<IActionResult> CreateTask([FromBody] TaskDto taskDto)
         {
             var createdTask = await _taskService.CreateTaskAsync(taskDto);
-            return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.Id }, createdTask);
+            return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.Id }, createdTask); //201
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace TaskFlow.API.Controllers
         public async Task<IActionResult> UpdateTask(Guid id, [FromBody] TaskDto taskDto)
         {
             var updatedTask = await _taskService.UpdateTaskAsync(id, taskDto);
-            return Ok(updatedTask);
+            return Ok(updatedTask); // 200
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace TaskFlow.API.Controllers
         public async Task<IActionResult> DeleteTask(Guid id)
         {
             await _taskService.DeleteTaskAsync(id);
-            return NoContent();
+            return NoContent(); // 204
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace TaskFlow.API.Controllers
         public async Task<IActionResult> GetTasksByPriority([FromQuery] TaskPriority priority)
         {
             var tasks = await _taskService.GetTasksByPriorityAsync(priority);
-            return Ok(tasks);
+            return Ok(tasks); // 200
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace TaskFlow.API.Controllers
             [FromQuery] int pageSize = 10)
         {
             var result = await _taskService.GetTasksPaginatedAsync(pageNumber, pageSize);
-            return Ok(result);
+            return Ok(result); // 200
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace TaskFlow.API.Controllers
         public async Task<IActionResult> SearchTasks([FromQuery] string query)
         {
             var tasks = await _taskService.SearchTasksAsync(query);
-            return Ok(tasks);
+            return Ok(tasks); // 200
         }
     }
 }

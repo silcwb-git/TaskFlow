@@ -18,6 +18,9 @@ namespace TaskFlow.API.Controllers
             _taskService = taskService;
         }
 
+        ///<summary>
+        ///Obtém todas as tarefas
+        ///</summary>
         [HttpGet]
         public async Task<IActionResult> GetAllTasks()
         {
@@ -25,13 +28,21 @@ namespace TaskFlow.API.Controllers
             return Ok(tasks);
         }
 
+        /// <summary>
+        /// /Obtém tarefa por id
+        /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTaskById(Guid id)
         {
             var task = await _taskService.GetTaskByIdAsync(id);
-            return Ok(task);
+            if (task == null)
+                return NotFound(); // 404
+            return Ok(task); // 200
         }
 
+        /// <summary>
+        /// Cria nova tarefa
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> CreateTask([FromBody] TaskDto taskDto)
         {
@@ -39,6 +50,9 @@ namespace TaskFlow.API.Controllers
             return CreatedAtAction(nameof(GetTaskById), new { id = createdTask.Id }, createdTask);
         }
 
+        /// <summary>
+        /// Atualiza tarefa
+        /// </summary>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTask(Guid id, [FromBody] TaskDto taskDto)
         {
@@ -46,6 +60,9 @@ namespace TaskFlow.API.Controllers
             return Ok(updatedTask);
         }
 
+        /// <summary>
+        /// Deleta tarefa
+        /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTask(Guid id)
         {
@@ -53,6 +70,9 @@ namespace TaskFlow.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Filtra tarefas por prioridade
+        /// </summary>
         [HttpGet("filter")]
         public async Task<IActionResult> GetTasksByPriority([FromQuery] TaskPriority priority)
         {
@@ -60,6 +80,9 @@ namespace TaskFlow.API.Controllers
             return Ok(tasks);
         }
 
+        /// <summary>
+        /// Lista tarefas por paginação
+        /// </summary>
         [HttpGet("paginated")]
         public async Task<IActionResult> GetTasksPaginated(
             [FromQuery] int pageNumber = 1,
@@ -69,6 +92,9 @@ namespace TaskFlow.API.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Lista tarefas de acordo com o texto informado no campo de busca
+        /// </summary>
         [HttpGet("search")]
         public async Task<IActionResult> SearchTasks([FromQuery] string query)
         {
